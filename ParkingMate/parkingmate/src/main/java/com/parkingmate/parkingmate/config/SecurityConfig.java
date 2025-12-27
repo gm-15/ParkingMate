@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/signup", "/api/users/login").permitAll()
                         // POST /api/spaces 요청은 'USER' 역할을 가진 사용자만 허용
                         .requestMatchers(HttpMethod.POST, "/api/spaces").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/images/**").hasRole("USER")
                         .anyRequest().authenticated()
                 );
 

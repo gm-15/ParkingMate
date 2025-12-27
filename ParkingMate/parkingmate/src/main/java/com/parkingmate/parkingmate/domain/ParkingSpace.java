@@ -25,10 +25,20 @@ public class ParkingSpace {
     @Column(nullable = false)
     private String address; // 주소
 
+    // 위치 정보 (위도, 경도)
+    @Column(precision = 10, scale = 7)
+    private Double latitude; // 위도
+
+    @Column(precision = 10, scale = 7)
+    private Double longitude; // 경도
+
     @Column(nullable = false)
     private int pricePerHour; // 시간당 가격
 
     private String description; // 상세 설명
+
+    @Column(length = 1000)
+    private String imageUrls; // 이미지 URL들 (쉼표로 구분)
 
     // 생성자
     public ParkingSpace(User user, String address, int pricePerHour, String description) {

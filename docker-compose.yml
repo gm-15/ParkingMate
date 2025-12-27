@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: parkingmate-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: parkingmate
+      MYSQL_USER: parkingmate
+      MYSQL_PASSWORD: parkingmate123!
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - parkingmate-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: parkingmate-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - parkingmate-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend (Spring Boot)
+  backend:
+    build:
+      context: ./ParkingMate/parkingmate
+      dockerfile: Dockerfile
+    container_name: parkingmate-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:mysql://mysql:3306/parkingmate?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+      DB_USERNAME: parkingmate
+      DB_PASSWORD: parkingmate123!
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - parkingmate-network
+    volumes:
+      - ./ParkingMate/parkingmate/logs:/app/logs
+
+  # Frontend (React)
+  frontend:
+    build:
+      context: ./ParkingMate/parking-mate-frontend
+      dockerfile: Dockerfile
+    container_name: parkingmate-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - parkingmate-network
+
+networks:
+  parkingmate-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  redis_data:
+

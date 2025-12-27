@@ -1,0 +1,19 @@
+# Terraform 변수 값 예시
+# 실제 사용 시 terraform.tfvars 파일로 복사하고 값 수정
+
+aws_region          = "ap-northeast-2"
+environment         = "dev"
+project_name        = "parkingmate"
+vpc_cidr            = "10.0.0.0/16"
+allowed_ssh_cidr    = "YOUR_IP_ADDRESS/32"  # 실제 IP 주소로 변경
+
+# RDS 설정
+db_instance_class      = "db.t3.micro"
+db_allocated_storage   = 20
+db_master_username     = "admin"
+db_master_password     = "CHANGE_THIS_PASSWORD"  # 강력한 비밀번호로 변경
+
+# Redis 설정
+redis_node_type        = "cache.t3.micro"
+redis_num_cache_nodes  = 1
+

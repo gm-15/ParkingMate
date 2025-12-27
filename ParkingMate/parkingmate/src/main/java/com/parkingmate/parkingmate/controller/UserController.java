@@ -1,10 +1,12 @@
 package com.parkingmate.parkingmate.controller;
 
+import com.parkingmate.parkingmate.dto.ApiResponse;
 import com.parkingmate.parkingmate.dto.UserLoginRequestDto;
 import com.parkingmate.parkingmate.dto.UserLoginResponseDto;
 import com.parkingmate.parkingmate.dto.UserProfileResponseDto;
 import com.parkingmate.parkingmate.dto.UserSignUpRequestDto;
 import com.parkingmate.parkingmate.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,22 +24,22 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody UserSignUpRequestDto requestDto) {
+    public ResponseEntity<ApiResponse<Void>> signUp(@RequestBody @Valid UserSignUpRequestDto requestDto) {
         userService.signUp(requestDto.getEmail(), requestDto.getPassword(), requestDto.getName());
-        return ResponseEntity.ok("회원가입이 성공적으로 완료되었습니다.");
+        return ResponseEntity.ok(ApiResponse.success("회원가입이 성공적으로 완료되었습니다.", null));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto requestDto) {
+    public ResponseEntity<ApiResponse<UserLoginResponseDto>> login(@RequestBody @Valid UserLoginRequestDto requestDto) {
         String token = userService.login(requestDto.getEmail(), requestDto.getPassword());
-        return ResponseEntity.ok(new UserLoginResponseDto(token));
+        return ResponseEntity.ok(ApiResponse.success(new UserLoginResponseDto(token)));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserProfileResponseDto> getMyProfile(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<ApiResponse<UserProfileResponseDto>> getMyProfile(@AuthenticationPrincipal UserDetails userDetails) {
         // userDetails.getUsername() 에는 사용자의 이메일이 들어있습니다.
         // 이 이메일을 사용해 우리 DB에서 실제 User 객체를 찾아옵니다.
         User user = userService.findByEmail(userDetails.getUsername());
-        return ResponseEntity.ok(new UserProfileResponseDto(user));
+        return ResponseEntity.ok(ApiResponse.success(new UserProfileResponseDto(user)));
     }
 }
