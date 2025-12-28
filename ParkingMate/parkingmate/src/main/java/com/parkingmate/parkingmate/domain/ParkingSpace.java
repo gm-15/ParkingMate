@@ -26,10 +26,10 @@ public class ParkingSpace {
     private String address; // 주소
 
     // 위치 정보 (위도, 경도)
-    @Column(precision = 10, scale = 7)
+
     private Double latitude; // 위도
 
-    @Column(precision = 10, scale = 7)
+
     private Double longitude; // 경도
 
     @Column(nullable = false)
