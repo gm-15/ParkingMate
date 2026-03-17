@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
@@ -50,7 +50,7 @@ function CreateSpacePage() {
         setLoading(true);
 
         try {
-            await axios.post('http://localhost:8080/api/spaces', {
+            await apiClient.post('/spaces', {
                 address: formData.address.trim(),
                 pricePerHour: parseInt(formData.pricePerHour, 10),
                 description: formData.description.trim() || null,

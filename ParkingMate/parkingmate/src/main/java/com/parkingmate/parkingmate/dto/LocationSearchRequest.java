@@ -14,3 +14,4 @@ public class LocationSearchRequest {
     private Integer size = 10;
 }
 
+

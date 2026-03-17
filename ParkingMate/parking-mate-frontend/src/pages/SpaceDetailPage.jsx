@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import '../App.css';
 
@@ -30,7 +30,7 @@ function SpaceDetailPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.get(`http://localhost:8080/api/spaces/${id}`);
+            const response = await apiClient.get(`/spaces/${id}`);
             const data = response.data.data || response.data;
             setSpace(data);
         } catch (err) {
@@ -83,7 +83,7 @@ function SpaceDetailPage() {
         setBookingLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:8080/api/bookings', {
+            const response = await apiClient.post('/bookings', {
                 parkingSpaceId: parseInt(id),
                 startTime: start.toISOString(),
                 endTime: end.toISOString(),

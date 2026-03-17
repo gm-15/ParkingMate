@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { Link } from 'react-router-dom';
 import '../App.css';
 
@@ -18,7 +18,7 @@ function HomePage() {
         setError('');
         try {
             const params = address ? { address } : {};
-            const response = await axios.get('http://localhost:8080/api/spaces', { params });
+            const response = await apiClient.get('/spaces', { params });
             const data = response.data.data || response.data;
             setSpaces(Array.isArray(data) ? data : []);
         } catch (err) {

@@ -81,3 +81,4 @@ terraform destroy
 - ECS/EC2 인스턴스 설정은 추가로 구현이 필요합니다.
 - Bastion Host의 SSH 접근은 특정 IP로 제한하는 것을 권장합니다.
 
+

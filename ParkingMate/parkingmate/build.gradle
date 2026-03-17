@@ -51,6 +51,14 @@ dependencies {
 	
 	// AWS S3
 	implementation 'software.amazon.awssdk:s3:2.20.0'
+
+	// Phase 2: MySQL Spatial / JTS
+	implementation 'org.hibernate.orm:hibernate-spatial'
+	implementation 'org.locationtech.jts:jts-core:1.19.0'
+
+	// Phase 3: Resilience4j
+	implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.named('test') {

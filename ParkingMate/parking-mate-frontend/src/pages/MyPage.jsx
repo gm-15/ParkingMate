@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../App.css';
@@ -24,7 +24,7 @@ function MyPage() {
 
     const fetchMyBookings = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/bookings/my');
+            const response = await apiClient.get('/bookings/my');
             const data = response.data.data || response.data;
             setBookings(Array.isArray(data) ? data : []);
         } catch (err) {
@@ -37,7 +37,7 @@ function MyPage() {
 
     const fetchMySpaces = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/spaces/my');
+            const response = await apiClient.get('/spaces/my');
             const data = response.data.data || response.data;
             setMySpaces(Array.isArray(data) ? data : []);
         } catch (err) {
@@ -51,7 +51,7 @@ function MyPage() {
         }
 
         try {
-            await axios.delete(`http://localhost:8080/api/bookings/${bookingId}`);
+            await apiClient.delete(`/bookings/${bookingId}`);
             fetchMyBookings();
         } catch (err) {
             const errorMessage = err.response?.data?.message || '예약 취소에 실패했습니다.';

@@ -298,3 +298,4 @@ Authorization: Bearer {token}
 - 409: 충돌 (중복 예약 등)
 - 500: 서버 오류
 
+

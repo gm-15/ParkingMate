@@ -17,3 +17,4 @@ db_master_password     = "CHANGE_THIS_PASSWORD"  # 강력한 비밀번호로 변
 redis_node_type        = "cache.t3.micro"
 redis_num_cache_nodes  = 1
 
+

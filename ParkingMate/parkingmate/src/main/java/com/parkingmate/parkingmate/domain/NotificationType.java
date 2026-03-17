@@ -8,3 +8,4 @@ public enum NotificationType {
     SYSTEM                // 시스템 알림
 }
 
+

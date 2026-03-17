@@ -13,3 +13,4 @@ public class AvailableTimeSlotDto {
     private int totalPrice;
 }
 
+

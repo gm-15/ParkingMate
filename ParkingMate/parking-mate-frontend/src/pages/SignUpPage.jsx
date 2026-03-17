@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../App.css';
 
@@ -59,7 +59,7 @@ function SignUpPage() {
         setLoading(true);
 
         try {
-            await axios.post('http://localhost:8080/api/users/signup', formData);
+            await apiClient.post('/users/signup', formData);
             navigate('/login', { 
                 state: { message: '회원가입이 완료되었습니다. 로그인해주세요.' } 
             });

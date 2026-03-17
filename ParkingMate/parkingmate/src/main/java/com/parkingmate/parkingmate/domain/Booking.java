@@ -40,19 +40,13 @@ public class Booking {
     @Column(nullable = false)
     private BookingStatus status; // 예약 상태 [RESERVED, CANCELED]
 
-    // Optimistic Lock을 위한 Version 필드
-    @Version
-    @Column(nullable = false)
-    private Long version;
-
     public Booking(User user, ParkingSpace parkingSpace, LocalDateTime startTime, LocalDateTime endTime, int totalPrice) {
         this.user = user;
         this.parkingSpace = parkingSpace;
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalPrice = totalPrice;
-        this.status = BookingStatus.RESERVED; // 예약 생성 시 기본 상태는 'RESERVED'
-        this.version = 0L; // Optimistic Lock 초기값
+        this.status = BookingStatus.RESERVED;
     }
 
     public void cancel() {

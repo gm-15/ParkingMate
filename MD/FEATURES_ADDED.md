@@ -189,3 +189,4 @@ GET /api/spaces/nearby?latitude=37.5665&longitude=126.9780&radiusKm=5&sortBy=dis
 
 모든 기능은 실제 AWS 리소스 없이도 코드 구조는 완성되었으며, 필요 시 설정만 추가하면 즉시 사용 가능합니다.
 
+
