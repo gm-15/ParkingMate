@@ -111,7 +111,7 @@ Hikari 풀 상태: 활성 0 | 유휴 2 | 대기 0 | 전체 2
 | TX 내 DB 쿼리 수 | 4건 | 6건 | **5건** |
 | 안정 평균 | 33ms | 37ms | **36ms** |
 | 베이스 대비 | — | +4ms (+12%) | **+3ms (+9%)** |
-| 분산 (min~max) | 28~41ms (1.5x) | 32~51ms **(2.4x)** | **33~40ms (1.2x)** |
+| 분산 (min~max) | 28~41ms (1.5x) | 32~51ms **(1.6x)** | **33~40ms (1.2x)** |
 | 알림 실패 시 | 예약 보존 | 예약 롤백 ❌ | **예약 보존 ✅** |
 | 이벤트 유실 | — | 유실 가능 ❌ | **DB 보장 ✅** |
 
@@ -129,7 +129,7 @@ After  Case 3: 5건 × ~2ms = ~36ms (outbox_event INSERT만 추가)
 
 **핵심 개선은 분산 안정성**
 ```
-Before Case 2 (2.4x 분산):
+Before Case 2 (1.6x 분산):
   알림 서비스에 부하가 걸리면 → notification SELECT/INSERT 느려짐
   → 예약 트랜잭션 전체 지연
   → 최악: 51ms (vs 최선: 32ms)
@@ -161,7 +161,7 @@ After  Case 3: 50ms 점유 → 풀 1개당 20 req/s → 전체 200 req/s
 정량:
   쿼리 수: 6건 → 5건 (-17%)
   평균 점유 시간: 37ms → 36ms (localhost 기준)
-  분산: 2.4x → 1.2x (안정성 2배 개선)
+  분산: 1.6x → 1.2x (안정성 개선)
   RDS 추정 점유: 60ms → 50ms (-17%)
 
 정성:
@@ -203,7 +203,7 @@ Before 리포트의 EXPLAIN 수치는 Before/After가 이미 포함되어 있으
 
 | Phase | 내용 | 핵심 개선 지표 |
 |-------|------|---------------|
-| Phase 1 | Transactional Outbox Pattern | 분산 2.4x → 1.2x, 알림 유실 해결 |
+| Phase 1 | Transactional Outbox Pattern | 분산 1.6x → 1.2x, 알림 유실 해결 |
 | Phase 2 | MySQL Spatial Index (R-Tree) | 스캔 행수 96.2% 감소 |
 | Phase 3 | Resilience4j CircuitBreaker + Bulkhead | Redis 장애 시 DB fallback 자동화 |
 | Phase 4 | Redis GEO Cache Layer | 위치 검색 읽기 경로 캐시화 |

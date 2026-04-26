@@ -1,5 +1,5 @@
 # Multi-stage build를 사용하여 이미지 크기 최적화
-FROM gradle:8.5-jdk17 AS build
+FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
 # Gradle 캐시 활용을 위해 의존성 먼저 복사

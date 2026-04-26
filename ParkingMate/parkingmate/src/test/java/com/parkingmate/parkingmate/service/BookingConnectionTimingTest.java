@@ -1,9 +1,16 @@
-package com.parkingmate.parkingmate.service;
+package com.parkingmate.parkingmate;
 
-import com.parkingmate.parkingmate.domain.*;
-import com.parkingmate.parkingmate.dto.BookingCreateRequestDto;
-import com.parkingmate.parkingmate.repository.*;
-import com.parkingmate.parkingmate.util.DistributedLockUtil;
+import com.parkingmate.parkingmate.reservation.domain.Booking;
+import com.parkingmate.parkingmate.notification.domain.NotificationType;
+import com.parkingmate.parkingmate.space.domain.ParkingSpace;
+import com.parkingmate.parkingmate.user.domain.User;
+import com.parkingmate.parkingmate.reservation.dto.BookingCreateRequestDto;
+import com.parkingmate.parkingmate.user.repository.UserRepository;
+import com.parkingmate.parkingmate.space.repository.ParkingSpaceRepository;
+import com.parkingmate.parkingmate.notification.repository.OutboxRepository;
+import com.parkingmate.parkingmate.reservation.service.BookingService;
+import com.parkingmate.parkingmate.notification.service.NotificationService;
+import com.parkingmate.parkingmate.common.util.DistributedLockUtil;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.HikariPoolMXBean;
 import org.junit.jupiter.api.*;

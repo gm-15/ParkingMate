@@ -1,0 +1,45 @@
+package com.parkingmate.parkingmate.user.controller;
+
+import com.parkingmate.parkingmate.common.dto.ApiResponse;
+import com.parkingmate.parkingmate.user.dto.UserLoginRequestDto;
+import com.parkingmate.parkingmate.user.dto.UserLoginResponseDto;
+import com.parkingmate.parkingmate.user.dto.UserProfileResponseDto;
+import com.parkingmate.parkingmate.user.dto.UserSignUpRequestDto;
+import com.parkingmate.parkingmate.user.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+import com.parkingmate.parkingmate.user.domain.User;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<ApiResponse<Void>> signUp(@RequestBody @Valid UserSignUpRequestDto requestDto) {
+        userService.signUp(requestDto.getEmail(), requestDto.getPassword(), requestDto.getName());
+        return ResponseEntity.ok(ApiResponse.success("회원가입이 성공적으로 완료되었습니다.", null));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<UserLoginResponseDto>> login(@RequestBody @Valid UserLoginRequestDto requestDto) {
+        String token = userService.login(requestDto.getEmail(), requestDto.getPassword());
+        return ResponseEntity.ok(ApiResponse.success(new UserLoginResponseDto(token)));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserProfileResponseDto>> getMyProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        // userDetails.getUsername() 에는 사용자의 이메일이 들어있습니다.
+        // 이 이메일을 사용해 우리 DB에서 실제 User 객체를 찾아옵니다.
+        User user = userService.findByEmail(userDetails.getUsername());
+        return ResponseEntity.ok(ApiResponse.success(new UserProfileResponseDto(user)));
+    }
+}
